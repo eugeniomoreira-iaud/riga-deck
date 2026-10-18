@@ -1,0 +1,18 @@
+:root{
+/* Slide canvas */
+--slide-w:1920px;--slide-h:1080px;
+/* 12-column grid */
+--grid-cols:12 /* @kind other */;--grid-margin-x:112px;--grid-margin-top:80px;--grid-gutter:32px;--grid-row-gap:32px;
+--header-h:168px;--footer-h:72px;--body-pad-bottom:56px;
+/* Cover */
+--cover-strip-w:366px;
+/* Spacing */
+--space-1:4px;--space-2:8px;--space-3:12px;--space-4:16px;--space-5:24px;--space-6:32px;--space-7:48px;--space-8:64px;--space-9:96px;--space-10:128px;
+/* Shape */
+--radius-0:0;--radius-1:4px;--radius-2:8px;
+--rule-w:1px;--accent-bar-w:80px;--accent-bar-h:9px;
+/* Elevation (used only for floating tooltips) */
+--shadow-pop:0 8px 24px rgba(18,30,71,.18);
+/* Motion */
+--ease-out:cubic-bezier(.2,.7,.2,1) /* @kind other */;--dur-fast:160ms /* @kind other */;--dur-base:320ms /* @kind other */;--dur-slow:640ms /* @kind other */;
+}

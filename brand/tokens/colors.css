@@ -1,0 +1,15 @@
+:root{
+/* Brand — UNIPG blue, sampled from source deck (0.137 0.224 0.51) */
+--blue-900:#121e47;--blue-800:#1a2c66;--blue-700:#233982;--blue-600:#2f4a9e;--blue-500:#4a66b8;--blue-300:#9fb0dd;--blue-100:#dde3f3;--blue-50:#eef1f9;
+/* Accent — red used for highlights/alerts in source charts */
+--red-600:#c00000;--red-500:#ed1c24;--red-100:#fde4e4;
+/* Data series (derived from source chart colours, tuned for harmony) */
+--data-1:#233982;--data-2:#ed1c24;--data-3:#4169e1;--data-4:#ff8c00;--data-5:#daa520;--data-6:#8a94ad;
+/* Neutrals */
+--ink-900:#14161c;--ink-700:#3a3f4b;--ink-500:#6b7180;--ink-300:#b5bac5;--ink-200:#d9dce3;--ink-100:#eceef2;--ink-50:#f6f7f9;--white:#ffffff;
+/* Semantic */
+--brand:var(--blue-700);--brand-strong:var(--blue-900);--accent:var(--red-500);
+--surface-slide:var(--white);--surface-tint:var(--blue-50);--surface-brand:var(--blue-700);--surface-deep:var(--blue-900);--surface-placeholder:var(--ink-100);
+--text-strong:var(--ink-900);--text-body:var(--ink-700);--text-muted:var(--ink-500);--text-on-brand:var(--white);--text-on-brand-muted:var(--blue-300);--text-brand:var(--blue-700);
+--rule:var(--ink-200);--rule-strong:var(--blue-700);
+}

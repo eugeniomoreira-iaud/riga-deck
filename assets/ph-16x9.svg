@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-label="placeholder ph-16x9">
+  <rect width="1600" height="900" fill="#e7e5e1"/>
+  <rect x="8" y="8" width="1584" height="884" fill="none" stroke="#9a948c" stroke-width="4" stroke-dasharray="24 16"/>
+  <text x="50%" y="48%" text-anchor="middle" font-family="monospace" font-size="114" fill="#4a453f">ph-16x9</text>
+  <text x="50%" y="58%" text-anchor="middle" font-family="monospace" font-size="57" fill="#6f6a63">1600&#215;900 &#183; 1.78</text>
+</svg>

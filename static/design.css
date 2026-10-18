@@ -1,0 +1,1161 @@
+/* The look is design-system/'s (readme.md, tokens/, the reference deck in
+ * templates/thesis-deck/). Its tokens are linked as they are, before this file;
+ * this file declares the vendored faces and ports the system's components to
+ * this deck's markup. DESIGN.md lists every place the port deviates.
+ *
+ * px are in the system's 1920x1080 canvas. Structure — grids, the heading
+ * band, overflow — stays in deck.css. */
+
+@font-face {
+  font-family: "Work Sans";
+  src: url("../vendor/fonts/work-sans-latin-wght-normal.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  /* Local file, so `block` costs nothing and avoids a face swap mid-talk. */
+  font-display: block;
+}
+
+@font-face {
+  font-family: "Work Sans";
+  src: url("../vendor/fonts/work-sans-latin-wght-italic.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: italic;
+  font-display: block;
+}
+
+@font-face {
+  font-family: "IBM Plex Mono";
+  src: url("../vendor/fonts/ibm-plex-mono-latin-400-normal.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: block;
+}
+
+@font-face {
+  font-family: "IBM Plex Mono";
+  src: url("../vendor/fonts/ibm-plex-mono-latin-500-normal.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: block;
+}
+
+.reveal {
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  font-weight: 400;
+  color: var(--text-body);
+  /* Black around the 16:9 slide when the screen has another shape. */
+  background: #000;
+}
+
+.reveal .slides {
+  background: var(--surface-slide);
+}
+
+/* reveal.js copies each slide's classes onto its full-screen background layer, so a slide type that paints its
+ * own background (the chapter opener) would tint the letterbox too. The slide paints itself; the layer stays clear. */
+.reveal .backgrounds .slide-background {
+  background: none;
+}
+
+/* reveal.css styles headings and paragraphs; the system's components set their
+ * own margins, so start from none. */
+.reveal h1,
+.reveal h2,
+.reveal h3,
+.reveal p {
+  margin: 0;
+  text-transform: none;
+}
+
+/* --- the signature motif: 80x9 accent bar ------------------------------ */
+
+.reveal .accent-bar {
+  display: block;
+  flex: none;
+  width: var(--accent-bar-w);
+  height: var(--accent-bar-h);
+  background: var(--brand);
+}
+
+.reveal .accent-bar-red {
+  background: var(--accent);
+}
+
+.reveal .accent-bar-white {
+  background: var(--white);
+}
+
+/* The reference's segmented progress bar (static/progress.js) is hidden in print. */
+@media print {
+  [data-deck-progress] {
+    display: none !important;
+  }
+}
+
+/* Reference slides 01, 02, 03, 17 and 25 set no line-height on most text. */
+.reveal .slide-title,
+.reveal .slide-abs,
+.reveal .slide-closing {
+  line-height: normal;
+}
+
+/* WordStrip layer: one generated strip, 70% opaque, under the content. */
+.reveal .strip-layer {
+  position: absolute;
+  inset: 0;
+  opacity: 0.7;
+  overflow: hidden;
+}
+
+.reveal .strip-layer > [data-wordstrip] {
+  position: absolute;
+  inset: 0;
+}
+
+.reveal .closing-strip {
+  position: absolute;
+  inset: 0;
+}
+
+.reveal .cover-logo {
+  position: absolute;
+  left: 135px;
+  top: 88px;
+  height: 519px;
+  width: auto;
+  margin: 0;
+  display: block;
+}
+
+/* --- chrome: SlideHeading --------------------------------------------- */
+
+.reveal .slide-heading {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.reveal .slide-kicker {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-brand);
+}
+
+/* h2 only: the title slide's <section> is also .slide-title. */
+.reveal h2.slide-title {
+  font-family: var(--font-sans);
+  font-size: var(--fs-h1);
+  font-weight: 700;
+  line-height: var(--lh-heading);
+  letter-spacing: var(--ls-tight);
+  color: var(--text-strong);
+  text-wrap: balance;
+  max-width: 1500px;
+}
+
+/* --- chrome: SlideFooter (single, brand) ------------------------------ */
+
+.reveal .slide-footer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: var(--footer-h);
+  box-sizing: border-box;
+  padding: 0 var(--grid-margin-x);
+  background: var(--surface-brand);
+  display: grid;
+  grid-template-columns: auto minmax(0, 3fr) minmax(0, 2fr) minmax(0, 5fr) auto;
+  column-gap: 48px;
+  align-content: center;
+  align-items: start;
+}
+
+.reveal .footer-logos {
+  align-self: center;
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.reveal .footer-logos img {
+  display: block;
+  height: 36px;
+  width: auto;
+  margin: 0;
+}
+
+.reveal .footer-logos img:first-child {
+  height: 34px;
+}
+
+.reveal .footer-field {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  line-height: 1.2;
+}
+
+.reveal .footer-label {
+  font-size: var(--fs-micro);
+  font-weight: 500;
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  color: var(--text-on-brand-muted);
+}
+
+.reveal .footer-value {
+  font-size: var(--fs-label);
+  font-weight: 600;
+  color: var(--text-on-brand);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.reveal .footer-thesis {
+  font-weight: 400;
+}
+
+/* SlideFooter size="double": 120px band, long thesis title clamped to two lines.
+   Everything above the footer is placed from --footer-h, so the content lifts with it. */
+body.footer-double { --footer-h: 120px; }
+body.footer-double .reveal .slide-footer { grid-template-columns: auto minmax(0, 2fr) minmax(0, 1.4fr) minmax(0, 6.6fr) auto; }
+body.footer-double .reveal .footer-thesis { white-space: normal; line-height: 1.25; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; text-wrap: pretty; margin-top: 2px; }
+
+.reveal .footer-page {
+  align-self: center;
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  color: var(--text-on-brand);
+}
+
+.reveal .footer-page span {
+  color: var(--text-on-brand-muted);
+}
+
+/* --- text and icon slides (04-07, 20, 21, 24): the reference's absolute boxes --- */
+
+/* The heading sits at 80/112 like the reference; deck.css's band rules do not apply. */
+.reveal .slide-abs > .slide-heading {
+  position: absolute;
+  left: var(--grid-margin-x);
+  right: var(--grid-margin-x);
+  top: var(--grid-margin-top);
+  margin: 0;
+  align-items: flex-start;
+}
+
+.reveal .slide-subtitle {
+  font-size: var(--fs-lead);
+  line-height: 1.3;
+  color: var(--text-muted);
+  max-width: 1300px;
+  text-wrap: pretty;
+}
+
+.reveal .prose,
+.reveal .cols,
+.reveal .features,
+.reveal .steps,
+.reveal .tools,
+.reveal .concl {
+  position: absolute;
+  left: var(--grid-margin-x);
+  right: var(--grid-margin-x);
+  bottom: calc(var(--footer-h) + var(--body-pad-bottom));
+  display: grid;
+  column-gap: var(--grid-gutter);
+}
+
+.reveal .prose {
+  top: 300px;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+}
+
+.reveal .prose-main {
+  grid-column: 1 / 8;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.reveal .prose-lead {
+  font-size: 44px;
+  line-height: 1.25;
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  color: var(--ink-900);
+  text-wrap: pretty;
+}
+
+.reveal .prose-detail {
+  font-size: 28px;
+  line-height: 1.45;
+  max-width: 980px;
+  text-wrap: pretty;
+}
+
+.reveal .prose-note {
+  grid-column: 9 / 13;
+  border-left: 2px solid var(--blue-700);
+  padding-left: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-self: start;
+}
+
+.reveal .prose-note-label {
+  font-family: var(--font-mono);
+  font-size: 18px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--blue-700);
+}
+
+.reveal .prose-note p {
+  font-size: 24px;
+  line-height: 1.45;
+  color: var(--ink-700);
+}
+
+.reveal .prose-note-source {
+  font-size: 18px;
+  color: var(--ink-500);
+  font-style: italic;
+}
+
+.reveal .cols {
+  top: 360px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.reveal .col {
+  border-top: 2px solid var(--blue-700);
+  padding-top: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.reveal .col-num {
+  font-family: var(--font-mono);
+  font-size: 24px;
+  color: var(--blue-700);
+}
+
+.reveal .col h3 {
+  font-size: 36px;
+  line-height: 1.15;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--ink-900);
+}
+
+.reveal .col p {
+  font-size: 26px;
+  line-height: 1.45;
+  text-wrap: pretty;
+}
+
+/* Lucide icon box (partials/icon.html.j2). */
+.reveal .icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  box-sizing: border-box;
+}
+
+.reveal .icon svg {
+  display: block;
+  flex: 0 0 auto;
+  margin: 0;
+}
+
+.reveal .icon-lg { width: 84px; height: 84px; }
+.reveal .icon-md { width: 76px; height: 76px; }
+.reveal .icon-solid { background: var(--blue-700); color: var(--white); }
+.reveal .icon-tint { background: var(--blue-50); color: var(--blue-700); }
+
+.reveal .features {
+  top: 380px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.reveal .feature {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.reveal .feature-text {
+  border-top: 1px solid var(--ink-200);
+  padding-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.reveal .feature h3 {
+  font-size: 34px;
+  line-height: 1.15;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--ink-900);
+}
+
+.reveal .feature p {
+  font-size: 24px;
+  line-height: 1.45;
+  text-wrap: pretty;
+}
+
+.reveal .steps {
+  top: 420px;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.reveal .step {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.reveal .step-line {
+  position: absolute;
+  left: 96px;
+  right: -32px;
+  top: 41px;
+  border-top: 2px dashed var(--blue-300);
+}
+
+.reveal .step-icon {
+  position: relative;
+  display: flex;
+}
+
+.reveal .step-num {
+  font-family: var(--font-mono);
+  font-size: 20px;
+  letter-spacing: 0.08em;
+  color: var(--blue-700);
+}
+
+.reveal .step h3 {
+  font-size: 32px;
+  line-height: 1.15;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--ink-900);
+}
+
+.reveal .step p {
+  font-size: 22px;
+  line-height: 1.45;
+  color: var(--ink-500);
+  text-wrap: pretty;
+}
+
+/* 20 Key figures: KeyFigure, four across, centred above the footer band. */
+.reveal .slide-key-figures {
+  background: var(--blue-50);
+}
+
+.reveal .kfs {
+  position: absolute;
+  left: var(--grid-margin-x);
+  right: var(--grid-margin-x);
+  top: 0;
+  bottom: var(--footer-h);
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  column-gap: var(--grid-gutter);
+  align-content: center;
+}
+
+.reveal .kf {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border-top: 2px solid var(--brand);
+  padding-top: 20px;
+  min-width: 0;
+}
+
+.reveal .kf-value {
+  font-weight: 700;
+  font-size: var(--fs-display);
+  line-height: 1;
+  letter-spacing: var(--ls-display);
+  color: var(--text-brand);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.reveal .kf-unit {
+  font-weight: 400;
+  font-size: 0.5em;
+  letter-spacing: 0;
+}
+
+.reveal .kf-label {
+  font-size: var(--fs-small);
+  font-weight: 600;
+  color: var(--text-strong);
+  line-height: 1.25;
+}
+
+.reveal .kf-note {
+  font-size: var(--fs-micro);
+  color: var(--text-muted);
+  line-height: 1.4;
+  text-wrap: pretty;
+}
+
+.reveal .tools {
+  top: 320px;
+  bottom: calc(var(--footer-h) + 72px);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  gap: var(--grid-gutter);
+}
+
+.reveal .tool {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  padding: 32px;
+  border: 1px solid var(--ink-200);
+}
+
+.reveal .tool-text {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.reveal .tool-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--ink-900);
+}
+
+.reveal .tool-sub {
+  font-size: 20px;
+  color: var(--ink-500);
+}
+
+/* 24 Conclusions: heading in columns 1-4, the list in 6-12. */
+.reveal .concl {
+  top: var(--grid-margin-top);
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+}
+
+.reveal .concl-head {
+  grid-column: 1 / 5;
+}
+
+.reveal .concl-head .slide-heading {
+  position: static;
+}
+
+.reveal .concl-list {
+  grid-column: 6 / 13;
+  display: flex;
+  flex-direction: column;
+}
+
+.reveal .concl-row {
+  display: grid;
+  grid-template-columns: 96px 1fr;
+  padding: 28px 0;
+  border-top: 1px solid var(--ink-200);
+}
+
+.reveal .concl-num {
+  font-family: var(--font-mono);
+  font-size: 24px;
+  color: var(--blue-700);
+}
+
+.reveal .concl-text {
+  font-size: 30px;
+  line-height: 1.35;
+  color: var(--ink-900);
+}
+
+.reveal .concl-next {
+  padding: 28px 24px;
+  border-top: 2px solid var(--blue-700);
+  background: var(--blue-50);
+  margin-top: 24px;
+}
+
+/* --- 01 Cover ---------------------------------------------------------- */
+
+/* Covers, openers and the closing place their parts absolutely, as the
+ * reference deck does: deck.css's section padding outranks any padding set
+ * here, and reveal's print view re-imposes it. */
+
+.reveal .cover-strip {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 510px;
+  height: 100%;
+  background: var(--surface-brand);
+}
+
+.reveal .cover-partners {
+  position: absolute;
+  left: 0;
+  width: 510px;
+  top: 812px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+}
+
+.reveal .cover-partners img {
+  display: block;
+  margin: 0;
+}
+
+.reveal .cover-partners img:first-child {
+  width: 280px;
+}
+
+.reveal .cover-partners img:last-child {
+  width: 340px;
+}
+
+.reveal .cover-head {
+  position: absolute;
+  left: 624px;
+  right: 112px;
+  top: 88px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.reveal .cover-kicker {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-brand);
+}
+
+.reveal .cover-title {
+  font-size: 60px;
+  line-height: 1.1;
+  font-weight: 700;
+  letter-spacing: var(--ls-tight);
+  color: var(--text-strong);
+  max-width: 1184px;
+  text-wrap: balance;
+}
+
+.reveal .cover-title-short {
+  font-size: 72px;
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+}
+
+.reveal .cover-subtitle {
+  font-size: 36px;
+  line-height: 1.25;
+  font-weight: 700;
+  color: var(--text-strong);
+  max-width: 1100px;
+  text-wrap: pretty;
+}
+
+.reveal .cover-programme {
+  position: absolute;
+  left: 624px;
+  top: 500px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.reveal .cover-programme p {
+  font-size: 34px;
+  line-height: 1.25;
+  color: var(--text-body);
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  max-width: 900px;
+}
+
+.reveal .cover-people {
+  position: absolute;
+  left: 624px;
+  right: 112px;
+  top: 800px;
+  margin: 0;
+  padding-top: 36px;
+  border-top: var(--rule-w) solid var(--rule);
+  display: grid;
+  /* Columns sized to their longest name, so no name wraps; spare width goes between them. */
+  grid-template-columns: repeat(3, max-content);
+  justify-content: space-between;
+  column-gap: var(--grid-gutter);
+}
+
+/* Reference cover: candidate | tutor + co-tutor | industrial + international.
+ * 6px inside a role, 6 + 14px between two roles in one column. */
+.reveal .cover-column {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.reveal .cover-column div,
+.reveal .closing-contact div {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.reveal .cover-people dt,
+.reveal .closing-contact dt {
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.reveal .cover-people dd,
+.reveal .closing-contact dd {
+  margin: 0;
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text-strong);
+}
+
+.reveal .cover-people .cover-note {
+  font-size: 22px;
+  font-weight: 400;
+  color: var(--text-body);
+}
+
+/* --- 25 Closing -------------------------------------------------------- */
+
+.reveal .slide-closing {
+  background: var(--surface-brand);
+  color: var(--text-on-brand);
+}
+
+.reveal .closing-logo {
+  position: absolute;
+  left: 270px;
+  top: 88px;
+  width: 400px;
+  margin: 0;
+}
+
+.reveal .closing-body {
+  position: absolute;
+  left: 480px;
+  right: 112px;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 40px;
+}
+
+.reveal .closing-body .accent-bar {
+  width: 88px;
+  height: 6px;
+}
+
+.reveal .closing-title {
+  font-size: 160px;
+  line-height: 0.95;
+  font-weight: 700;
+  letter-spacing: -0.045em;
+  color: var(--text-on-brand);
+}
+
+.reveal .closing-sub {
+  font-size: 34px;
+  line-height: 1.3;
+  color: var(--text-on-brand);
+}
+
+.reveal .closing-contact {
+  margin: 40px 0 0;
+  display: flex;
+  gap: 64px;
+}
+
+.reveal .closing-contact dt,
+.reveal .closing-contact dd {
+  color: var(--text-on-brand);
+}
+
+.reveal .closing-contact dd {
+  font-size: var(--fs-small);
+  font-weight: 600;
+}
+
+.reveal .closing-partners {
+  position: absolute;
+  left: 480px;
+  bottom: 88px;
+  display: flex;
+  align-items: center;
+  gap: 64px;
+}
+
+.reveal .closing-partners img {
+  margin: 0;
+}
+
+.reveal .closing-partners img:first-child {
+  width: 240px;
+}
+
+.reveal .closing-partners img:last-child {
+  width: 286px;
+}
+
+/* --- 02 Summary, reused by the recap ----------------------------------- */
+
+.reveal .summary {
+  position: absolute;
+  left: var(--grid-margin-x);
+  right: var(--grid-margin-x);
+  top: var(--grid-margin-top);
+  /* Down to the body's safe area above the footer, so a long agenda shares
+     that height instead of running under the footer. */
+  bottom: calc(var(--footer-h) + var(--body-pad-bottom));
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--grid-gutter);
+  align-items: start;
+}
+
+.reveal .summary-head {
+  grid-column: 1 / 5;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.reveal .summary-title {
+  font-size: var(--fs-display);
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: var(--ls-display);
+  color: var(--text-strong);
+}
+
+.reveal .summary-lead {
+  margin-top: 16px;
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--text-muted);
+  text-wrap: pretty;
+}
+
+.reveal .agenda {
+  grid-column: 6 / 13;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  list-style: none;
+  margin: 0;
+  padding: 8px 0 0;
+}
+
+.reveal .agenda-item {
+  position: relative;
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr);
+  align-items: baseline;
+  align-content: center;
+  /* Each row's natural height (28px padding either side); rows shrink
+     evenly, padding first, when the parts outnumber the space. */
+  flex: 0 1 134.6px;
+  min-height: min-content;
+  padding: 0;
+  margin: 0;
+  border-top: var(--rule-w) solid var(--rule);
+}
+
+.reveal .agenda-number {
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+  color: var(--text-brand);
+}
+
+.reveal .agenda-text {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.reveal .agenda-title {
+  font-size: var(--fs-h3);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: var(--ls-tight);
+  color: var(--text-strong);
+}
+
+.reveal .agenda-summary {
+  font-size: var(--fs-small);
+  line-height: 1.3;
+  color: var(--text-muted);
+}
+
+/* The recap marks its own part with the full-width accent bar and fades the
+ * others, as AgendaList does (0.45 for parts behind, 0.6 for parts ahead). */
+.reveal .agenda-item::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: 0;
+  width: var(--accent-bar-w);
+  height: var(--accent-bar-h);
+  background: var(--brand);
+  transform-origin: left center;
+  transform: scaleX(0);
+  transition: transform var(--dur-base) var(--ease-out);
+}
+
+.reveal .agenda-current::before,
+.reveal .agenda-item:has(.agenda-link):hover::before {
+  transform: scaleX(1);
+}
+
+/* The row links to its part opener; the link leaves the row's grid alone. */
+.reveal .agenda-link {
+  display: contents;
+  color: inherit;
+  text-decoration: none;
+}
+
+.reveal .agenda-done {
+  opacity: 0.45;
+}
+
+.reveal .agenda-next {
+  opacity: 0.6;
+}
+
+/* --- 03 Chapter opener A ----------------------------------------------- */
+
+.reveal .slide-part-opener {
+  background: var(--surface-brand);
+  color: var(--text-on-brand);
+}
+
+/* Decorative: the number is also in the kicker as text. */
+.reveal .opener-numeral {
+  position: absolute;
+  left: 112px;
+  top: 56px;
+  font-size: 420px;
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: -0.06em;
+  color: var(--blue-600);
+}
+
+.reveal .opener-text {
+  position: absolute;
+  left: 112px;
+  bottom: 120px;
+  width: 900px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.reveal .opener-kicker {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-on-brand-muted);
+}
+
+.reveal .opener-title {
+  font-size: 104px;
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: var(--ls-display);
+  color: var(--text-on-brand);
+  text-wrap: balance;
+}
+
+.reveal .opener-summary {
+  font-size: var(--fs-lead);
+  line-height: 1.35;
+  color: var(--text-on-brand-muted);
+  max-width: 760px;
+  text-wrap: pretty;
+}
+
+/* --- 23 Statement (and part-divider) ---------------------------------- */
+
+.reveal .slide-quote,
+.reveal .slide-part-divider {
+  color: var(--blue-700);
+}
+
+/* Columns 2-11 of the 12-column grid, centred above the footer band. */
+.reveal .statement {
+  position: absolute;
+  left: var(--grid-margin-x);
+  right: var(--grid-margin-x);
+  top: 0;
+  bottom: var(--footer-h);
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--grid-gutter);
+  align-content: center;
+}
+
+.reveal .statement > * {
+  grid-column: 2 / 12;
+}
+
+.reveal .statement .accent-bar {
+  width: 80px;
+  height: 9px;
+  margin-bottom: 48px;
+}
+
+.reveal .statement-text {
+  font-size: 72px;
+  line-height: 1.15;
+  font-weight: 500;
+  letter-spacing: -0.025em;
+  color: var(--blue-700);
+  text-wrap: balance;
+}
+
+.reveal .statement-source {
+  margin-top: 48px;
+  font-family: var(--font-mono);
+  font-size: 22px;
+  letter-spacing: 0.06em;
+  color: var(--ink-500);
+}
+
+/* --- figures: MediaSlot (components/media/MediaSlot.jsx) and slides 08-16, 22 --- */
+
+.reveal .media-wrap { height: 100%; }
+.reveal .visual { margin: 0; display: flex; flex-direction: column; gap: 14px; min-height: 0; min-width: 0; height: 100%; overflow: hidden; }
+.reveal .visual-media { position: relative; width: 100%; height: 100%; min-height: 0; overflow: hidden; background: var(--surface-placeholder); flex: 1 1 0%; }
+.reveal .media-video { height: auto; aspect-ratio: 16 / 9; flex: 0 0 auto; }
+.reveal .visual-img { position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; max-height: none; object-fit: cover; display: block; margin: 0; }
+.reveal .visual-svg svg { display: block; width: 100%; height: 100%; } /* an inlined chart: its viewBox scales it to fit, as contain */
+.reveal video.visual-img { object-fit: contain; } /* a screen recording is shown whole */
+.reveal .visual-media:has(video) { background: none; }
+.reveal .media-ph {
+  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 14px;
+  background-image: repeating-linear-gradient(135deg, rgba(35, 57, 130, 0.06) 0 2px, transparent 2px 22px);
+}
+.reveal .media-play { width: 96px; height: 96px; border-radius: 50%; border: 3px solid var(--brand); display: flex; align-items: center; justify-content: center; }
+.reveal .media-play div { width: 0; height: 0; border-top: 18px solid transparent; border-bottom: 18px solid transparent; border-left: 28px solid var(--brand); margin-left: 8px; }
+.reveal .media-label { font-family: var(--font-mono); font-size: var(--fs-label); letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); text-align: center; padding: 0 24px; }
+.reveal .media-index { position: absolute; top: 0; left: 0; background: var(--brand); color: var(--white); font-family: var(--font-mono); font-size: var(--fs-micro); padding: 6px 10px; letter-spacing: 0.06em; }
+.reveal .visual-caption { display: flex; justify-content: space-between; gap: 24px; font-family: var(--font-sans); font-size: var(--fs-micro); line-height: 1.35; color: var(--text-muted); }
+.reveal .visual-caption > span:first-child { text-wrap: pretty; }
+.reveal .visual-credit { font-family: var(--font-mono); white-space: nowrap; }
+
+/* One absolute 12-column box; `mx-low` starts under the 288px heading band. */
+.reveal .mx { position: absolute; left: var(--grid-margin-x); right: var(--grid-margin-x); top: var(--grid-margin-top); bottom: calc(var(--footer-h) + var(--body-pad-bottom)); display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--grid-gutter); }
+.reveal .mx-low { top: 288px; }
+.reveal .mx-col { display: flex; flex-direction: column; }
+.reveal .mx .slide-heading, .reveal .il-text .slide-heading { flex: none; margin: 0; align-items: flex-start; }
+.reveal .mx-lead { font-size: 28px; line-height: 1.45; text-wrap: pretty; }
+.reveal .mx-bullets { display: flex; flex-direction: column; gap: 18px; font-size: 26px; line-height: 1.4; }
+.reveal .mx-bullets > div { display: grid; grid-template-columns: 28px 1fr; gap: 12px; }
+.reveal .mx-bullets > div > span:first-child { width: 10px; height: 10px; background: var(--blue-700); margin-top: 13px; }
+
+.reveal .il-img { position: absolute; left: 0; top: 0; width: 1184px; bottom: var(--footer-h); }
+.reveal .il-text { position: absolute; left: 1264px; right: var(--grid-margin-x); top: var(--grid-margin-top); bottom: calc(var(--footer-h) + var(--body-pad-bottom)); display: flex; flex-direction: column; }
+.reveal .il-cap { margin: auto 0 0; font-size: 18px; line-height: 1.4; color: var(--ink-500); }
+.reveal .il-cap b, .reveal .mosaic-caps b { color: var(--blue-700); font-family: var(--font-mono); font-weight: 500; }
+
+.reveal .ili { display: flex; flex-direction: column; }
+.reveal .ili-row { display: grid; grid-template-columns: 76px 1fr; column-gap: 24px; align-items: start; padding: 24px 0; border-top: 1px solid var(--ink-200); }
+.reveal .ili-row svg { display: block; }
+.reveal .ili-row > div { display: flex; flex-direction: column; gap: 6px; }
+.reveal .ili-title { font-size: 28px; font-weight: 700; color: var(--ink-900); }
+.reveal .ili-text { font-size: 22px; line-height: 1.4; color: var(--ink-500); }
+
+.reveal .three-col { display: flex; flex-direction: column; gap: 20px; min-height: 0; }
+.reveal .three-col h3 { font-size: 28px; font-weight: 700; color: var(--ink-900); }
+.reveal .three-col p { font-size: 22px; line-height: 1.4; color: var(--ink-500); }
+
+.reveal .mosaic-caps { grid-area: 1 / 11 / 3 / 13; display: flex; flex-direction: column; gap: 28px; font-size: 20px; line-height: 1.4; color: var(--ink-500); }
+
+.reveal .fb-img { position: absolute; inset: 0 0 360px; }
+.reveal .slide-abs.layout-full-bleed > .slide-heading { top: auto; right: auto; bottom: calc(var(--footer-h) + 64px); width: 1100px; }
+.reveal .layout-video .media-wrap { height: auto; width: 100%; }
+/* Single image under the heading band, bleeding to the side edges and the footer;
+   shown whole, since a cropped diagram loses its labels. */
+.reveal .layout-image .mx { left: 0; right: 0; top: 216px; bottom: var(--footer-h); }
+.reveal .layout-image .visual-img { object-fit: contain; }
+.reveal .layout-image .visual-media:has(.visual-img) { background: none; }
+/* Slide 13 with one image: text column left, the image bleeding to the top and
+   right edges and down to the footer (1232 x 960). An optional second visual, a
+   map legend drawn apart, sits at the foot of the text column, against the
+   image's bottom-left corner, at its own width. */
+.reveal .layout-side-image .side-img {
+  grid-area: 1 / 5 / 3 / 13;
+  margin: calc(-1 * var(--grid-margin-top)) calc(-1 * var(--grid-margin-x)) calc(-1 * var(--body-pad-bottom)) 0;
+}
+.reveal .layout-side-image .side-legend { grid-area: 2 / 1 / 3 / 5; align-self: end; margin-bottom: calc(-1 * var(--body-pad-bottom)); }
+.reveal .layout-side-image .side-legend :is(.media-wrap, .visual, .visual-media) { height: auto; }
+.reveal .layout-side-image .side-legend .visual-media:has(.visual-img) { background: none; }
+.reveal .layout-side-image .side-legend .visual-img { position: static; height: auto; }
+.reveal .layout-side-image .side-legend .media-ph { position: static; aspect-ratio: 2; }
+
+.reveal .cmp-col { display: flex; flex-direction: column; gap: 24px; min-height: 0; }
+.reveal .cmp-col p { font-size: 24px; line-height: 1.4; }
+.reveal .cmp-head { display: flex; align-items: baseline; gap: 16px; }
+.reveal .cmp-head span { font-family: var(--font-mono); font-size: 24px; color: var(--blue-700); }
+.reveal .cmp-head h3 { font-size: 36px; font-weight: 700; letter-spacing: -0.02em; color: var(--ink-900); }
+.reveal .cmp-rule { position: absolute; left: -48px; top: 0; bottom: 0; border-left: 1px solid var(--ink-200); }
+.reveal .three-col p, .reveal .mosaic-caps p, .reveal .cmp-col p, .reveal .il-cap, .reveal .ili-text { text-wrap: pretty; }
+
+/* --- chart slides (18, 19): static placeholders until plan 06 --- */
+.reveal .chart-box { position: absolute; left: var(--grid-margin-x); right: var(--grid-margin-x); top: 340px; bottom: calc(var(--footer-h) + var(--body-pad-bottom)); display: flex; flex-direction: column; gap: 16px; min-height: 0; }
+.reveal .chart-legend { display: flex; flex-wrap: wrap; align-items: center; gap: 24px; font-size: var(--fs-micro); color: var(--text-body); }
+.reveal .chart-legend span { display: flex; align-items: center; gap: 10px; }
+.reveal .chart-legend i { width: 20px; height: 4px; display: block; }
+.reveal .chart-legend b { font: 400 14px var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-brand); border: 1px solid var(--blue-300); padding: 6px 12px; }
+.reveal .chart-plot { position: relative; flex: 1 1 0%; min-height: 0; }
+.reveal .chart-plot svg { display: block; position: absolute; inset: 0; }
+.reveal .ci-list { display: flex; flex-direction: column; gap: 28px; }
+.reveal .ci-list > div { font-size: 16px; border-top: 1px solid var(--ink-200); padding-top: 20px; }
+.reveal .ci-list span { font-size: 22px; font-weight: 600; }
+.reveal .ci-list p { margin: 8px 0 0; font-size: 24px; line-height: 1.4; }

@@ -1,0 +1,175 @@
+/* Structure only.
+ *
+ * Caption placement, overflow control, print view. Type, colour and scale arrive
+ * with design-system/ via design.css — nothing in this file should be mistaken
+ * for a design decision. Slide composition lives in design.css. */
+
+/* Every slide is a column: the reserved heading band, then the content box.
+ *
+ * reveal.js sets `style="display: block"` inline on every section, so this is
+ * the one place !important is earned: without it the flex column below is inert,
+ * every grid is sized by its content, and a two-row stack overflows the slide by
+ * 950px with its second visual off-screen. */
+.reveal .slides section.slide {
+  display: flex !important;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  /* design-system/tokens/layout.css: 80px top, 112px sides, and the 72px
+   * footer band plus 56px of air below the content. */
+  padding: var(--grid-margin-top) var(--grid-margin-x) calc(var(--footer-h) + var(--body-pad-bottom));
+  box-sizing: border-box;
+  text-align: left;
+}
+
+/* Reference slides 01, 02, 03, 17, 25 place everything absolutely on the bare
+ * 1920x1080 canvas: no padding, no flex column (design.css). */
+.reveal .slides section.slide:is(.slide-title, .slide-agenda, .slide-part-recap, .slide-part-opener, .slide-closing, .slide-abs) {
+  display: block !important;
+  padding: 0;
+}
+
+/* reveal's print view forces `display: block; padding: 0` on every section at
+ * equal specificity, which killed the flex column above: grids took their
+ * content height and one visual slide printed as three pages. Restore the
+ * column and pin the height to the deck's 1080px (config in static/deck.js). */
+.print-pdf .reveal .slides section.slide {
+  display: flex !important;
+  padding: var(--grid-margin-top) var(--grid-margin-x) calc(var(--footer-h) + var(--body-pad-bottom)) !important;
+  height: 1080px;
+}
+
+.print-pdf .reveal .slides section.slide:is(.slide-title, .slide-agenda, .slide-part-recap, .slide-part-opener, .slide-closing, .slide-abs) {
+  display: block !important;
+  padding: 0 !important;
+}
+
+/* The heading band: `<header class="slide-heading">` holding a kicker and
+ * `h2.slide-title`. Emitted even when empty on content slides (visual, prose,
+ * part-recap), so a heading can never land on top of a visual and the content
+ * box starts at the same height on those slides. `min-height: 0` matters: a flex
+ * item's automatic minimum is its content, so without it a wrapped title grows
+ * the band and the overflow gate never sees it. */
+.reveal .slide-heading {
+  flex: 0 0 var(--header-h);
+  min-height: 0;
+  margin: 0 0 40px;
+}
+
+/* Full-screen toggle (deck.js): invisible until hovered, except on the cover
+ * outside full screen, where it pulses in light grey so it can be found. */
+.fullscreen-toggle {
+  position: absolute;
+  /* Below progress.js's 28px hover band, so the last segments stay clickable. */
+  top: 28px;
+  right: 0;
+  z-index: 100;
+  /* reveal.css turns pointer events off on .slides, for its sections only. */
+  pointer-events: auto;
+  width: 48px;
+  height: 48px;
+  border: 0;
+  background: transparent;
+  color: var(--ink-300);
+  font-size: 28px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.fullscreen-toggle:hover { opacity: 1; }
+.fullscreen-toggle::after {
+  content: attr(aria-label);
+  position: absolute;
+  top: 50%;
+  right: 100%;
+  transform: translateY(-50%);
+  white-space: nowrap;
+  /* progress.js's slide-label tag, at the system's 16px floor rather than its 15px. */
+  font-family: var(--font-mono);
+  font-size: 16px;
+  letter-spacing: .04em;
+  padding: 6px 10px;
+  background: var(--blue-900);
+  color: #fff;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+.fullscreen-toggle:hover::after { opacity: 1; }
+:root:not(:fullscreen) body:has(.slide-title.present) .fullscreen-toggle:not(:hover) {
+  animation: fullscreen-pulse 1.6s ease-in-out infinite;
+}
+@keyframes fullscreen-pulse { 0%, 100% { opacity: 0.35; } 50% { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  :root:not(:fullscreen) body:has(.slide-title.present) .fullscreen-toggle:not(:hover) { animation: none; opacity: 0.8; }
+}
+.print-pdf .fullscreen-toggle { display: none; }
+
+/* Riga event deck: divergences from the template. Recorded in DESIGN.md. */
+
+/* Cover: conference name on one line, its date below at kicker hierarchy. */
+.reveal .cover-programme p { max-width: none; }
+.reveal .cover-programme .programme-line:last-of-type {
+  display: inline-block;
+  margin-top: 12px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+
+
+/* Historical plates: the side-image slide turned on its side. Text top-left, legend top-right,
+   the two plates side by side below, from slide edge to slide edge down to the footer.
+   Picked out by its image, since the manifest has no per-slide class. */
+.reveal .layout-side-image:has(img[src*="documentation-plates."]) .mx { grid-template-rows: auto minmax(0, 1fr) !important; }
+.reveal .layout-side-image:has(img[src*="documentation-plates."]) .mx-col { grid-area: 1 / 1 / 2 / 9 !important; }
+.reveal .layout-side-image:has(img[src*="documentation-plates."]) .side-legend { grid-area: 1 / 9 / 2 / 13; align-self: start; margin: 0; }
+.reveal .layout-side-image:has(img[src*="documentation-plates."]) .side-img { grid-area: 2 / 1 / 3 / 13; margin: 0 calc(-1 * var(--grid-margin-x)) calc(-1 * var(--body-pad-bottom)); }
+.reveal .layout-side-image:has(img[src*="documentation-plates."]) .side-img .visual-img { object-fit: contain; }
+.reveal .layout-side-image:has(img[src*="documentation-plates."]) .side-img .visual-media:has(.visual-img) { background: none; }
+
+/* Thesis model figures: Revit screenshots with property panels, shown whole rather than cropped to the box. */
+.reveal .layout-side-image .side-img .visual-img[src*="model-"] { object-fit: contain; }
+.reveal .layout-side-image .side-img .visual-media:has(.visual-img[src*="model-"]) { background: none; }
+
+/* Cover: one Authors list, two columns, in place of the roles. Names a step lighter;
+   the presenter keeps the template's weight. */
+.reveal .cover-authors { grid-template-columns: 1fr; }
+.reveal .cover-authors .cover-column div { display: grid; grid-template-columns: repeat(2, max-content); gap: 6px var(--grid-gutter); }
+.reveal .cover-authors dt { grid-column: 1 / -1; }
+.reveal .cover-authors dd { font-weight: 400; }
+.reveal .cover-authors dd.cover-presenter { font-weight: 700; }
+
+/* Footer: presenter, conference, title. Conference and title share the width left by the presenter. */
+body.footer-double .reveal .slide-footer { grid-template-columns: auto max-content minmax(0, 1fr) minmax(0, 1fr) auto; }
+.reveal .footer-logos img { height: 54px; }
+.reveal .footer-logos img:first-child { height: 51px; }
+
+/* No background cross-fade between slides; see overrides.js for the content fades. */
+.reveal .backgrounds .slide-background { transition: none !important; }
+
+/* Sections figure: a safe area around it, since the cloud runs to the image's own edges. */
+.reveal .layout-side-image .side-img .visual-img[src*="model-sections"] { padding: 64px; box-sizing: border-box; }
+
+/* Upcoming developments: the columns slide's icons on white, the glyph in blue, aligned with the text. */
+.reveal .slide-columns .icon-solid {
+  background: var(--white);
+  color: var(--blue-700);
+  justify-content: flex-start;
+}
+.reveal .slide-columns .icon-solid svg { width: 64px; height: 64px; }
+
+/* The walls today: the grid's four photos fill the side-image area, bleeding to the top and right
+   edges and down to the footer, 8 px apart, without index tags. The text column keeps its place.
+   Picked out by its images, since the manifest has no per-slide class. */
+.reveal .layout-grid:has(img[src*="case-study-walls-"]) .mx {
+  top: 0; right: 0; bottom: var(--footer-h);
+  grid-template-columns: 568px 1fr 1fr; grid-template-rows: 1fr 1fr !important; gap: 8px !important;
+}
+.reveal .layout-grid:has(img[src*="case-study-walls-"]) .mx-col { grid-area: 1 / 1 / 3 / 2 !important; width: 544px; padding: var(--grid-margin-top) 0 var(--body-pad-bottom); }
+.reveal .layout-grid:has(img[src*="case-study-walls-"]) .mx > div:nth-child(2) { grid-area: 1 / 2 !important; }
+.reveal .layout-grid:has(img[src*="case-study-walls-"]) .mx > div:nth-child(3) { grid-area: 1 / 3 !important; }
+.reveal .layout-grid:has(img[src*="case-study-walls-"]) .mx > div:nth-child(4) { grid-area: 2 / 2 !important; }
+.reveal .layout-grid:has(img[src*="case-study-walls-"]) .mx > div:nth-child(5) { grid-area: 2 / 3 !important; }
+.reveal .layout-grid:has(img[src*="case-study-walls-"]) .media-index { display: none; }
